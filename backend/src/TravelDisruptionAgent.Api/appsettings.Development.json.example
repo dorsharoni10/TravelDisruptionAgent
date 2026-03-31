@@ -1,0 +1,35 @@
+{
+  "MongoDb": {
+    "ConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "TravelDisruptionAgent",
+    "SessionsCollection": "conversation_sessions"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Information"
+    }
+  },
+  "Llm": {
+    "Provider": "Gemini",
+    "Model": "gemini-2.5-flash-lite",
+    "ApiKey": "",
+    "Endpoint": "",
+    "DeploymentName": "",
+    "EmbeddingModel": "gemini-embedding-001",
+    "EnableStreaming": true,
+    "Temperature": 0.3,
+    "MaxTokens": 4096
+  },
+  "WeatherApi": {
+    "UseMock": true,
+    "BaseUrl": "https://api.weatherapi.com/v1",
+    "ApiKey": ""
+  },
+  "AviationStack": {
+    "UseMock": true,
+    "BaseUrl": "https://api.aviationstack.com/v1",
+    "ApiKey": "",
+    "IncludeFlightDateOnRouteSearch": false
+  }
+}
