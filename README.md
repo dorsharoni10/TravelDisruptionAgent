@@ -26,7 +26,6 @@ The folder name matches the repository name on GitHub.
 
 ```bash
 git clone https://github.com/dorsharoni10/TravelDisruptionAgent-.git
-cd TravelDisruptionAgent-
 ```
 
 If you cloned into a custom folder name, `cd` into that folder instead; all paths below are relative to the **repository root** (where `README.md`, `backend/`, and `frontend/` live).
