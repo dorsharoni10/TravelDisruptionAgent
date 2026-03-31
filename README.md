@@ -1,5 +1,7 @@
 # Travel Disruption Agent
 
+**Repository:** [github.com/dorsharoni10/TravelDisruptionAgent-](https://github.com/dorsharoni10/TravelDisruptionAgent-)
+
 Demo AI agent for business-travel disruptions: routing, planning, flight/weather tools (or mocks), policy RAG, self-correction, guardrails, and **SSE** live activity in the UI. Development defaults keep **auth off**; production startup validates JWT, CORS, and hosts (see `ValidateProductionConfiguration` in `Program.cs`).
 
 **Conversation history:** local **MongoDB** (`mongodb://localhost:27017`) by default, or **in-memory** if `MongoDb__ConnectionString` is empty.
@@ -20,10 +22,14 @@ Use **two terminals** when developing: one for the API, one for the UI.
 
 ### 2. Clone and enter the repo
 
+The folder name matches the repository name on GitHub.
+
 ```bash
-git clone <repository-url>
-cd TravelDisruptionAgent
+git clone https://github.com/dorsharoni10/TravelDisruptionAgent-.git
+cd TravelDisruptionAgent-
 ```
+
+If you cloned into a custom folder name, `cd` into that folder instead; all paths below are relative to the **repository root** (where `README.md`, `backend/`, and `frontend/` live).
 
 ### 3. MongoDB (choose one)
 
@@ -32,13 +38,25 @@ cd TravelDisruptionAgent
 
 ### 4. Optional: API keys
 
-The app runs **without** keys using mocks/fallbacks where implemented. For live LLM, weather, and flights, set variables from **`backend/src/TravelDisruptionAgent.Api/env.example`** (never commit real keys), e.g.:
+The app runs **without** keys using mocks/fallbacks where implemented. For live LLM, embeddings/RAG, weather, and flights, configure keys **without committing them**:
+
+- **Reference:** variable names and comments in [`backend/src/TravelDisruptionAgent.Api/env.example`](backend/src/TravelDisruptionAgent.Api/env.example).
+- **Shell (PowerShell)** before `dotnet run`:
 
 ```powershell
 $env:Llm__ApiKey = "your-key"
-$env:WeatherApi__ApiKey = "..."
-$env:AviationStack__ApiKey = "..."
+$env:WeatherApi__ApiKey = "your-weatherapi-key"
+$env:AviationStack__ApiKey = "your-aviationstack-key"
 ```
+
+- **.NET User Secrets (recommended for local dev):** from `backend/src/TravelDisruptionAgent.Api`:
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "Llm:ApiKey" "your-key"
+```
+
+(User secrets use `:` in keys; environment variables use `__`, e.g. `Llm__ApiKey`.)
 
 ### 5. Backend — terminal 1
 
@@ -134,9 +152,11 @@ React → POST /api/chat/stream (SSE) → AgentOrchestrator
 ## Project layout
 
 ```
-TravelDisruptionAgent/
-├── backend/src/TravelDisruptionAgent.{Api,Application,Domain,Infrastructure}/
-├── backend/tests/TravelDisruptionAgent.Tests/
+<repo-root>/          # e.g. TravelDisruptionAgent- after git clone
+├── backend/
+│   ├── src/TravelDisruptionAgent.{Api,Application,Domain,Infrastructure}/
+│   └── tests/TravelDisruptionAgent.Tests/
+├── docs/
 ├── frontend/
 └── README.md
 ```
