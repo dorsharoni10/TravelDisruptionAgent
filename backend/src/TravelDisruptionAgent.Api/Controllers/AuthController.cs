@@ -30,7 +30,8 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Development-only: returns a signed JWT for the SPA. Requires <see cref="AuthOptions.AllowDevTokenEndpoint"/> and Development environment.
+    /// Development-only: Create JWT Token.
+    /// returns a signed JWT for the SPA. Requires <see cref="AuthOptions.AllowDevTokenEndpoint"/> and Development environment.
     /// </summary>
     [AllowAnonymous]
     [HttpPost("dev-token")]

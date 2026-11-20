@@ -89,7 +89,7 @@ public class AgentLoopService : IAgentLoopService
             : "(no plan steps)";
 
         var systemInstructions = BuildSystemInstructions(workflowIntent);
-
+        //reAct check if everything ok if not fix and try again.
         while (iteration < _options.MaxIterations)
         {
             iteration++;
@@ -235,7 +235,7 @@ public class AgentLoopService : IAgentLoopService
                     CitationSanitizationWarnings = citeWarnings
                 });
             }
-
+            // if need tools but no tools from the llm try again.
             if (action is not "invoke_tool" and not "tool" and not "call_tool")
             {
                 transcriptBuffer.AppendObservation(iteration,

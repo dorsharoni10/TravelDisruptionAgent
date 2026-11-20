@@ -78,13 +78,14 @@ public class AgentOrchestrator : IAgentOrchestrator
 
         activity?.SetTag("session.id", clientSessionId);
         activity?.SetTag("session.storage_key", sessionKey);
-
+        //take the history and build new history prompt 
         var priorTurns = await _memoryService.GetConversationHistoryAsync(sessionKey, cancellationToken);
         var priorPrompt = ConversationHistoryPrompt.Build(
             priorTurns,
             _sessionOptions.MaxMessages,
             _sessionOptions.MaxPromptChars);
 
+        //save the last turn 
         async Task PersistTurnAsync(string assistantReply, CancellationToken ct)
         {
             var now = DateTime.UtcNow;
@@ -103,6 +104,7 @@ public class AgentOrchestrator : IAgentOrchestrator
         var useAgenticPath = false;
         AgentLoopRunResult? agentLoopOutcome = null;
 
+        //send step to the user in real time SSE
         async Task Emit(AgentStepType step, string title, string content)
         {
             var evt = AgentEvent.Create(step, title, content);
@@ -128,6 +130,8 @@ public class AgentOrchestrator : IAgentOrchestrator
 
         // Step 2–5: Unified scope + routing + plan (one LLM call when configured)
         await Emit(AgentStepType.ScopeCheck, "Conversation Routing", "Analyzing scope, intent, data needs, and plan...");
+
+        //start decision agentic rag and tools.
         var routePlan = await _conversationRouter.RouteAndPlanAsync(request.Message, priorPrompt, cancellationToken);
         var route = routePlan.Route;
         var plan = routePlan.Plan;
@@ -181,6 +185,7 @@ public class AgentOrchestrator : IAgentOrchestrator
         await Emit(AgentStepType.Routing, "Routing Decision", "Deciding data strategy...");
         routingReason = $"{route.Reason} | needsTools={route.NeedsTools}, needsRag={route.NeedsRag}";
 
+        // if need to retrive from vector DB.
         var retrievePolicyContext = route.NeedsRag || route.NeedsTools;
 
         string routingLabel = retrievePolicyContext

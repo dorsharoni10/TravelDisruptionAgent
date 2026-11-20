@@ -226,6 +226,8 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+// Create Rag and embedded with all the documents to vectors for demo. 
+// for real use distributed Vector DB like Qdrant and also can embeeding with local model.
 using (var scope = app.Services.CreateScope())
 {
     var ragService = scope.ServiceProvider.GetRequiredService<IRagService>();

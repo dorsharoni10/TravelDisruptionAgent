@@ -82,6 +82,7 @@ public class ConversationRouter : IConversationRouter
 
         if (!_kernelFactory.IsConfigured)
         {
+            //check hard coded.
             var route = await RouteWithSignalsAsync(userMessage, cancellationToken);
             var plan = _planningService.CreateDeterministicPlan(
                 route.Intent, route.NeedsRag || route.NeedsTools, userMessage);
